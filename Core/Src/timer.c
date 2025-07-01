@@ -32,6 +32,7 @@ void TIM2_Init()
 	uint16_t* TIM2_PSC = (uint16_t*) (TIM2_BASE_ADDR + 0x28);
 	uint32_t* TIM2_ARR = (uint32_t*) (TIM2_BASE_ADDR + 0x2C);
 	uint16_t* TIM2_CNT = (uint16_t*) (TIM2_BASE_ADDR + 0x24);
+	uint16_t* TIM2_EGR = (uint16_t*) (TIM2_BASE_ADDR + 0x14);
 
 	/* Counter used as up-counter */
 	*TIM2_CR1 &= ~(1 << 4);
@@ -45,7 +46,8 @@ void TIM2_Init()
 	/* Reset counter value */
 	*TIM2_CNT = 0;
 
-//	*TIM2_CR1 |= 1 << 7;
+	*TIM2_EGR |= 1 << 0;
+
 	/* Enable counter */
 	*TIM2_CR1 |= 1 << 0;
 }

@@ -14,7 +14,7 @@ int main()
 
 	while (1)
 	{
-		master_send(0x3f, WRITE, 'A');
+//		master_send_data('A');
 	}
 	return 0;
 }

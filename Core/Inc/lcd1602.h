@@ -17,5 +17,5 @@ typedef enum
 } mode_t;
 
 void I2C1_Init();
-void master_send(uint8_t slave_address, mode_t mode, uint8_t data);
+void master_send_data(uint8_t data);
 #endif /* INC_LCD1602_H_ */

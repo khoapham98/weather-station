@@ -8,7 +8,18 @@
 #include "dht11.h"
 #include "timer.h"
 
-uint32_t timeout = 0;
+char check_sum(uint8_t* data)
+{
+	uint8_t* checksum = &data[0] + 4;
+	uint8_t sum = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		sum += data[i];
+	}
+
+	return (sum == (*checksum)) ? 1 : 0;
+}
+
 void receive_data(uint8_t* data)
 {
 	uint32_t* GPIOC_MODER = (uint32_t*) (GPIOC_BASE_ADDR + 0x00);

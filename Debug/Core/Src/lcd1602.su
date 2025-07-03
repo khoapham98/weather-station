@@ -1,6 +1,9 @@
-../Core/Src/lcd1602.c:11:6:LCD_Init	8	static
-../Core/Src/lcd1602.c:43:6:LCD_WriteDATA	24	static
-../Core/Src/lcd1602.c:51:6:LCD_WriteCMD	24	static
-../Core/Src/lcd1602.c:59:6:write_4bits	16	static
-../Core/Src/lcd1602.c:72:6:master_transmit	40	static
-../Core/Src/lcd1602.c:116:6:I2C1_Init	48	static
+../Core/Src/lcd1602.c:12:6:LCD_Init	8	static
+../Core/Src/lcd1602.c:48:6:LCD_printString	24	static
+../Core/Src/lcd1602.c:57:6:LCD_printChar	16	static
+../Core/Src/lcd1602.c:62:6:LCD_ClrScr	8	static
+../Core/Src/lcd1602.c:73:6:LCD_WriteDATA	24	static
+../Core/Src/lcd1602.c:81:6:LCD_WriteCMD	24	static
+../Core/Src/lcd1602.c:89:6:write_4bits	16	static
+../Core/Src/lcd1602.c:102:6:master_transmit	40	static
+../Core/Src/lcd1602.c:146:6:I2C1_Init	48	static

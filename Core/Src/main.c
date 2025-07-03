@@ -15,7 +15,9 @@ int main()
 
 	while (1)
 	{
-		LCD_WriteDATA('A');
+		LCD_printString("Pham Anh Khoa");
+ 		delay_ms(3000);
+ 		LCD_ClrScr();
  		delay_ms(1000);
 	}
 	return 0;

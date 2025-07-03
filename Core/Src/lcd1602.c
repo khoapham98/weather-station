@@ -7,6 +7,7 @@
 #include "main.h"
 #include "lcd1602.h"
 #include "timer.h"
+#include "string.h"
 
 void LCD_Init()
 {
@@ -28,7 +29,7 @@ void LCD_Init()
 	delay_us(40);
 
 	/* Display ON & display cursor */
-	LCD_WriteCMD(0x0E);
+	LCD_WriteCMD(0x0C);
 	delay_us(40);
 
 	/* clear display */
@@ -37,6 +38,35 @@ void LCD_Init()
 
 	/* entry mode set */
 	LCD_WriteCMD(0x06);
+	delay_us(40);
+
+	/* return home */
+	LCD_WriteCMD(0x02);
+	delay_us(40);
+}
+
+void LCD_printString(char* str)
+{
+	int size = strlen(str);
+	for (int i = 0; i < size; i++)
+	{
+		LCD_printChar(str[i]);
+	}
+}
+
+void LCD_printChar(uint8_t ch)
+{
+	LCD_WriteDATA(ch);
+}
+
+void LCD_ClrScr()
+{
+	/* clear display */
+	LCD_WriteCMD(0x01);
+	delay_ms(2);
+
+	/* return home */
+	LCD_WriteCMD(0x02);
 	delay_us(40);
 }
 

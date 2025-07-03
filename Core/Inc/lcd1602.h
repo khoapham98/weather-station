@@ -17,13 +17,6 @@
 
 /* starts data */
 #define ENABLE 0x04
-#define DISABLE 0x0B
-
-/* select read or write */
-#define RW 0x02
-
-/* select registers */
-#define RS 0x01
 
 typedef enum
 {
@@ -35,7 +28,9 @@ typedef enum
 	DATA = 0x01,
 	CMD  = 0x00
 } type_t;
-
+void LCD_printString(char* str);
+void LCD_printChar(uint8_t ch);
+void LCD_ClrScr();
 void LCD_WriteDATA(uint8_t data);
 void LCD_WriteCMD(uint8_t data);
 void write_4bits(uint8_t data);

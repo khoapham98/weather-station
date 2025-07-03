@@ -14,139 +14,62 @@ void LCD_Init()
 	delay_ms(50);
 
 	/* function set */
-	master_funcSet(0b0011);
+	write_4bits(0x03 << 4);
 	delay_ms(5);
-	master_funcSet(0b0011);
+	write_4bits(0x03 << 4);
 	delay_us(110);
-	master_funcSet(0b0011);
+	write_4bits(0x03 << 4);
 	delay_us(110);
-	master_funcSet(0b0010);
+	write_4bits(0x02 << 4);
 	delay_us(110);
 
-	/* select 4-bit operation */
-	master_sendCMD(0x28);
+	/* select 4-bit operation and select 2 line display */
+	LCD_WriteCMD(0x28);
 	delay_us(40);
 
-	/* Display Off */
-	master_sendCMD(0x08);
+	/* Display ON & display cursor */
+	LCD_WriteCMD(0x0E);
 	delay_us(40);
 
 	/* clear display */
-	master_sendCMD(0x01);
+	LCD_WriteCMD(0x01);
 	delay_ms(2);
 
 	/* entry mode set */
-	master_sendCMD(0x06);
-	delay_us(40);
-
-	/* Display ON */
-	master_sendCMD(0xE);
+	LCD_WriteCMD(0x06);
 	delay_us(40);
 }
 
-void master_funcSet(uint8_t data)
+void LCD_WriteDATA(uint8_t data)
 {
-	uint16_t* I2C_CR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x00);
-	uint16_t* I2C_SR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x14);
-	uint16_t* I2C_SR2 = (uint16_t*) (I2C1_BASE_ADDR + 0x18);
-	uint16_t* I2C_DR  = (uint16_t*) (I2C1_BASE_ADDR + 0x10);
-
-	/* wait until bus is free */
-	while (((*I2C_SR2 >> 1) & 1) == 1);
-
-	/* generate START condition */
-	*I2C_CR1 |= 1 << 8;
-
-	/* wait for START condition is generated */
-	while ((*I2C_SR1 & 1) == 0);
-
-	/* send slave address */
-	volatile uint16_t tmp = *I2C_SR1;
-	*I2C_DR = (0x27 << 1) | WRITE;
-
-	/* wait until the slave address is sent and slave response ACK */
-	while (((*I2C_SR1 >> 1) & 1) == 0);
-	tmp = *I2C_SR1;
-	tmp = *I2C_SR2;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-
-	/* send data or instruction */
-	*I2C_DR = (data << 4) | CMD;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-
-	/* clear bit EN */
-	delay_us(10);
-	*I2C_DR = (data << 4) | 0b1000;
-
-	/* wait until the Data register is empty and transfer finished */
-	while ((((*I2C_SR1 >> 7) & 1) == 0) && (((*I2C_SR1 >> 2) & 1) == 0));
-
-	/* generate STOP condition */
-	*I2C_CR1 |= 1 << 9;
+	uint8_t high_bits = data & 0xF0;
+	uint8_t low_bits = data << 4;
+	write_4bits(high_bits | DATA);
+	write_4bits(low_bits | DATA);
 }
 
-void master_sendDATA(uint8_t data)
+void LCD_WriteCMD(uint8_t data)
 {
-	uint16_t* I2C_CR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x00);
-	uint16_t* I2C_SR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x14);
-	uint16_t* I2C_SR2 = (uint16_t*) (I2C1_BASE_ADDR + 0x18);
-	uint16_t* I2C_DR  = (uint16_t*) (I2C1_BASE_ADDR + 0x10);
-
-	/* wait until bus is free */
-	while (((*I2C_SR2 >> 1) & 1) == 1);
-
-	/* generate START condition */
-	*I2C_CR1 |= 1 << 8;
-
-	/* wait for START condition is generated */
-	while ((*I2C_SR1 & 1) == 0);
-
-	/* send slave address */
-	volatile uint16_t tmp = *I2C_SR1;
-	*I2C_DR = (0x27 << 1) | WRITE;
-
-	/* wait until the slave address is sent and slave response ACK */
-	while (((*I2C_SR1 >> 1) & 1) == 0);
-	tmp = *I2C_SR1;
-	tmp = *I2C_SR2;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-
-	/* send data or instruction */
-	uint8_t high_bits = data >> 4;
-	*I2C_DR = (high_bits << 4) | DATA;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-	delay_us(10);
-
-	/* clear bit EN */
-	*I2C_DR = (high_bits << 4) | 0b1001;
-
-	/* send data or instruction */
-	uint8_t low_bits = data;
-	*I2C_DR = (low_bits << 4) | DATA;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-	delay_us(10);
-
-	/* clear bit EN */
-	*I2C_DR = (low_bits << 4) | 0b1001;
-
-	/* wait until the Data register is empty and transfer finished */
-	while ((((*I2C_SR1 >> 7) & 1) == 0) && (((*I2C_SR1 >> 2) & 1) == 0));
-
-	/* generate STOP condition */
-	*I2C_CR1 |= 1 << 9;
+	uint8_t high_bits = data & 0xF0;
+	uint8_t low_bits = data << 4;
+	write_4bits(high_bits | CMD);
+	write_4bits(low_bits | CMD);
 }
 
-void master_sendCMD(uint8_t data)
+void write_4bits(uint8_t data)
+{
+	/* make sure EN bit is low before send new data */
+	master_transmit(data & ~ENABLE);
+	delay_us(25);
+
+	/* send data */
+	master_transmit(data | ENABLE);
+	delay_us(25);
+	master_transmit(data & ~ENABLE);
+	delay_us(25);
+}
+
+void master_transmit(uint8_t data)
 {
 	uint16_t* I2C_CR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x00);
 	uint16_t* I2C_SR1 = (uint16_t*) (I2C1_BASE_ADDR + 0x14);
@@ -175,26 +98,7 @@ void master_sendCMD(uint8_t data)
 	while (((*I2C_SR1 >> 7) & 1) == 0);
 
 	/* send data or instruction */
-	uint8_t high_bits = data >> 4;
-	*I2C_DR = (high_bits << 4) | CMD;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-	delay_us(10);
-
-	/* clear bit EN */
-	*I2C_DR = (high_bits << 4) | 0b1000;
-
-	/* send data or instruction */
-	uint8_t low_bits = data;
-	*I2C_DR = (low_bits << 4) | CMD;
-
-	/* wait until the Data register is empty */
-	while (((*I2C_SR1 >> 7) & 1) == 0);
-	delay_us(10);
-
-	/* clear bit EN */
-	*I2C_DR = (low_bits << 4) | 0b1000;
+	*I2C_DR = data | BACKLIGHT;
 
 	/* wait until the Data register is empty and transfer finished */
 	while ((((*I2C_SR1 >> 7) & 1) == 0) && (((*I2C_SR1 >> 2) & 1) == 0));

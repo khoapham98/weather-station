@@ -15,8 +15,8 @@ int main()
 
 	while (1)
 	{
-		master_sendDATA('a');
-		delay_ms(1000);
+		LCD_WriteDATA('A');
+ 		delay_ms(1000);
 	}
 	return 0;
 }

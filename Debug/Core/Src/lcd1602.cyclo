@@ -1,5 +1,6 @@
 ../Core/Src/lcd1602.c:11:6:LCD_Init	1
-../Core/Src/lcd1602.c:47:6:master_funcSet	8
-../Core/Src/lcd1602.c:92:6:master_sendDATA	9
-../Core/Src/lcd1602.c:149:6:master_sendCMD	9
-../Core/Src/lcd1602.c:212:6:I2C1_Init	1
+../Core/Src/lcd1602.c:43:6:LCD_WriteDATA	1
+../Core/Src/lcd1602.c:51:6:LCD_WriteCMD	1
+../Core/Src/lcd1602.c:59:6:write_4bits	1
+../Core/Src/lcd1602.c:72:6:master_transmit	7
+../Core/Src/lcd1602.c:116:6:I2C1_Init	1

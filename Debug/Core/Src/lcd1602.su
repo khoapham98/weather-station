@@ -1,3 +1,5 @@
-../Core/Src/lcd1602.c:11:6:LCD_Init	4	static
-../Core/Src/lcd1602.c:16:6:master_send_data	40	static
-../Core/Src/lcd1602.c:68:6:I2C1_Init	48	static
+../Core/Src/lcd1602.c:11:6:LCD_Init	8	static
+../Core/Src/lcd1602.c:47:6:master_funcSet	40	static
+../Core/Src/lcd1602.c:92:6:master_sendDATA	40	static
+../Core/Src/lcd1602.c:149:6:master_sendCMD	40	static
+../Core/Src/lcd1602.c:212:6:I2C1_Init	48	static

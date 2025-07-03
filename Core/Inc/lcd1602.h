@@ -16,6 +16,15 @@ typedef enum
 	WRITE, READ
 } mode_t;
 
+typedef enum
+{
+	DATA = 0b1101,
+	CMD  = 0b1100
+} type_t;
+
 void I2C1_Init();
-void master_send_data(uint8_t data);
+void LCD_Init();
+void master_funcSet(uint8_t data);
+void master_sendDATA(uint8_t data);
+void master_sendCMD(uint8_t data);
 #endif /* INC_LCD1602_H_ */

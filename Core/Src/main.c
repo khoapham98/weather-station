@@ -11,10 +11,12 @@ int main()
 	TIM2_Init();
 	DHT11_Init();
 	I2C1_Init();
+	LCD_Init();
 
 	while (1)
 	{
-//		master_send_data('A');
+		master_sendDATA('a');
+		delay_ms(1000);
 	}
 	return 0;
 }

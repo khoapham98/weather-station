@@ -8,6 +8,9 @@
 #include "dht11.h"
 #include "timer.h"
 
+/*
+	data: address of the array used to hold the 40 bits of data sent from the DHT11
+ */
 char check_sum(uint8_t* data)
 {
 	uint8_t* checksum = &data[0] + 4;
@@ -20,6 +23,9 @@ char check_sum(uint8_t* data)
 	return (sum == (*checksum)) ? 1 : 0;
 }
 
+/*
+	data: address of the array used to hold the 40 bits of data sent from the DHT11
+ */
 void receive_data(uint8_t* data)
 {
 	uint32_t* GPIOC_MODER = (uint32_t*) (GPIOC_BASE_ADDR + 0x00);
@@ -32,27 +38,27 @@ void receive_data(uint8_t* data)
 
 	/* MCU pulls down voltage for at least 18ms */
 	*GPIOC_ODR &= ~(1 << 14);
-	delay_ms(25);
+	delay_ms(20);
 
 	/* MCU pulls up voltage and wait for DHT response (~20us) */
 	*GPIOC_ODR |= 1 << 14;
-	delay_us(30);
+	delay_us(20);
 
 	/* Set PC14 as INPUT to receive the response from DHT11 */
 	*GPIOC_MODER &= ~(0b11 << (14 * 2));
 
 	/* wait for DHT11 to response */
 	while (((*GPIOC_IDR >> 14) & 1) == 1);
-	delay_us(70);
+	delay_us(60);
 	while (((*GPIOC_IDR >> 14) & 1) == 0);
-	delay_us(70);
+	delay_us(60);
 
 	for (int i = 0; i < 5; i++)
 	{
 		for (int j = 7; j >= 0; j--)
 		{
 			while (((*GPIOC_IDR >> 14) & 1) == 1);
-			delay_us(40);
+			delay_us(30);
 			while (((*GPIOC_IDR >> 14) & 1) == 0);
 			delay_us(30);
 

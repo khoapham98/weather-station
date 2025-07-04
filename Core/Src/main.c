@@ -15,11 +15,18 @@ int main()
 
 	while (1)
 	{
- 		LCD_gotoxy(3, 1);
- 		LCD_printString("HELLO WORLD");
- 		delay_ms(2000);
- 		LCD_ClrScr();
- 		delay_ms(1000);
+		receive_data(data);
+		if (check_sum(data) == 1)
+		{
+			LCD_ClrScr();
+			delay_ms(200);
+			LCD_gotoxy(1, 1);
+			LCD_printString("Humi: %d.%d %c", data[0], data[1], 0x25);
+			LCD_gotoxy(2, 1);
+			LCD_printString("Temp: %d.%d %cC", data[2], data[3], 0xDF);
+			delay_ms(1000);
+		}
+		delay_ms(1000);
 	}
 	return 0;
 }

@@ -10,7 +10,6 @@
 #define GPIOC_BASE_ADDR 0x40020800
 
 void DHT11_Init();
-void mcu_send_start();
 void receive_data(uint8_t* data);
 char check_sum(uint8_t* data);
 

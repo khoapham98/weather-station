@@ -34,8 +34,9 @@ typedef enum
 
 void LCD_gotoxy(uint8_t row, uint8_t column);
 void set_cursor_position(uint8_t cmd);
-void LCD_printString(char* str);
-void LCD_printChar(uint8_t ch);
+void LCD_printString(char* str, ...);
+void LCD_print_String(char* str);
+void LCD_print_Char(uint8_t ch);
 void LCD_ClrScr();
 void LCD_WriteDATA(uint8_t data);
 void LCD_WriteCMD(uint8_t data);

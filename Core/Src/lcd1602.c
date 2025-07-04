@@ -7,7 +7,23 @@
 #include "main.h"
 #include "lcd1602.h"
 #include "timer.h"
-#include "string.h"
+#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+void LCD_printString(char* str, ...)
+{
+	va_list list;
+	va_start(list, str);
+	char print_buf[128] = { 0 };
+	vsprintf(print_buf, str, list);
+	int size = strlen(str);
+	for (int i = 0; i < size; i++)
+	{
+		LCD_print_Char(print_buf[i]);
+	}
+	va_end(list);
+}
 
 /*
 	1 <= row <= 2
@@ -40,16 +56,16 @@ void set_cursor_position(uint8_t cmd)
 	delay_us(40);
 }
 
-void LCD_printString(char* str)
+void LCD_print_String(char* str)
 {
 	int size = strlen(str);
 	for (int i = 0; i < size; i++)
 	{
-		LCD_printChar(str[i]);
+		LCD_print_Char(str[i]);
 	}
 }
 
-void LCD_printChar(uint8_t ch)
+void LCD_print_Char(uint8_t ch)
 {
 	LCD_WriteDATA(ch);
 	delay_us(40);

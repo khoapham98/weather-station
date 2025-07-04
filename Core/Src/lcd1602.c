@@ -9,39 +9,34 @@
 #include "timer.h"
 #include "string.h"
 
-void LCD_Init()
+/*
+	1 <= row <= 2
+	1 <= column <= 40
+ */
+void LCD_gotoxy(uint8_t row, uint8_t column)
 {
-	/* after power on, wait for more than 40ms after VCC rises to 2.7 V */
-	delay_ms(50);
+	if (row == 1)
+	{
+		set_cursor_position((column - 1) * row);
+	}
+	else if (row == 2)
+	{
+		set_cursor_position(column + 63);
+	}
+	else
+	{
+		LCD_gotoxy(1, 1);
+		LCD_printString("INVALID NUMBER");
+		LCD_gotoxy(2, 1);
+		LCD_printString("BACK TO 1ST LINE");
+		delay_ms(3000);
+		LCD_ClrScr();
+	}
+}
 
-	/* function set */
-	write_4bits(0x03 << 4);
-	delay_ms(5);
-	write_4bits(0x03 << 4);
-	delay_us(110);
-	write_4bits(0x03 << 4);
-	delay_us(110);
-	write_4bits(0x02 << 4);
-	delay_us(110);
-
-	/* select 4-bit operation and select 2 line display */
-	LCD_WriteCMD(0x28);
-	delay_us(40);
-
-	/* Display ON & display cursor */
-	LCD_WriteCMD(0x0C);
-	delay_us(40);
-
-	/* clear display */
-	LCD_WriteCMD(0x01);
-	delay_ms(2);
-
-	/* entry mode set */
-	LCD_WriteCMD(0x06);
-	delay_us(40);
-
-	/* return home */
-	LCD_WriteCMD(0x02);
+void set_cursor_position(uint8_t cmd)
+{
+	LCD_WriteCMD(cmd | POS);
 	delay_us(40);
 }
 
@@ -57,6 +52,7 @@ void LCD_printString(char* str)
 void LCD_printChar(uint8_t ch)
 {
 	LCD_WriteDATA(ch);
+	delay_us(40);
 }
 
 void LCD_ClrScr()
@@ -67,7 +63,7 @@ void LCD_ClrScr()
 
 	/* return home */
 	LCD_WriteCMD(0x02);
-	delay_us(40);
+	delay_ms(2);
 }
 
 void LCD_WriteDATA(uint8_t data)
@@ -92,7 +88,7 @@ void write_4bits(uint8_t data)
 	master_transmit(data & ~ENABLE);
 	delay_us(25);
 
-	/* send data */
+	/* send data with EN = 1 and EN = 0*/
 	master_transmit(data | ENABLE);
 	delay_us(25);
 	master_transmit(data & ~ENABLE);
@@ -135,6 +131,42 @@ void master_transmit(uint8_t data)
 
 	/* generate STOP condition */
 	*I2C_CR1 |= 1 << 9;
+}
+
+void LCD_Init()
+{
+	/* after power on, wait for more than 40ms after VCC rises to 2.7 V */
+	delay_ms(50);
+
+	/* function set */
+	write_4bits(0x03 << 4);
+	delay_ms(5);
+	write_4bits(0x03 << 4);
+	delay_us(110);
+	write_4bits(0x03 << 4);
+	delay_us(110);
+	write_4bits(0x02 << 4);
+	delay_us(110);
+
+	/* select 4-bit operation and select 2 line display */
+	LCD_WriteCMD(0x28);
+	delay_us(40);
+
+	/* Display ON & display cursor */
+	LCD_WriteCMD(0x0C);
+	delay_us(40);
+
+	/* clear display */
+	LCD_WriteCMD(0x01);
+	delay_ms(2);
+
+	/* entry mode set */
+	LCD_WriteCMD(0x06);
+	delay_us(40);
+
+	/* return home */
+	LCD_WriteCMD(0x02);
+	delay_ms(2);
 }
 
 /*	==  I2C1  ==

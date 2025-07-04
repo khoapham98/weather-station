@@ -15,8 +15,9 @@ int main()
 
 	while (1)
 	{
-		LCD_printString("Pham Anh Khoa");
- 		delay_ms(3000);
+ 		LCD_gotoxy(3, 1);
+ 		LCD_printString("HELLO WORLD");
+ 		delay_ms(2000);
  		LCD_ClrScr();
  		delay_ms(1000);
 	}

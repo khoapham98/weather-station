@@ -11,20 +11,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-void LCD_printString(char* str, ...)
-{
-	va_list list;
-	va_start(list, str);
-	char print_buf[128] = { 0 };
-	vsprintf(print_buf, str, list);
-	int size = strlen(str);
-	for (int i = 0; i < size; i++)
-	{
-		LCD_print_Char(print_buf[i]);
-	}
-	va_end(list);
-}
-
 /*
 	1 <= row <= 2
 	1 <= column <= 40
@@ -42,9 +28,9 @@ void LCD_gotoxy(uint8_t row, uint8_t column)
 	else
 	{
 		LCD_gotoxy(1, 1);
-		LCD_printString("INVALID NUMBER");
+		LCD_print_String("INVALID NUMBER");
 		LCD_gotoxy(2, 1);
-		LCD_printString("BACK TO 1ST LINE");
+		LCD_print_String("BACK TO 1ST LINE");
 		delay_ms(3000);
 		LCD_ClrScr();
 	}
@@ -56,13 +42,38 @@ void set_cursor_position(uint8_t cmd)
 	delay_us(40);
 }
 
-void LCD_print_String(char* str)
+void LCD_print_String_and_Scroll(char* str, ...)
 {
-	int size = strlen(str);
+	va_list list;
+	va_start(list, str);
+	char print_buf[128] = { 0 };
+	vsprintf(print_buf, str, list);
+	int size = strlen(print_buf);
 	for (int i = 0; i < size; i++)
 	{
-		LCD_print_Char(str[i]);
+		LCD_print_Char(print_buf[i]);
 	}
+	va_end(list);
+	int scroll_time = size - 16 + 3;
+	for (int i = 0; i < scroll_time; i++)
+	{
+		delay_ms(500);
+		LCD_WriteCMD(0x18);
+	}
+}
+
+void LCD_print_String(char* str, ...)
+{
+	va_list list;
+	va_start(list, str);
+	char print_buf[128] = { 0 };
+	vsprintf(print_buf, str, list);
+	int size = strlen(print_buf);
+	for (int i = 0; i < size; i++)
+	{
+		LCD_print_Char(print_buf[i]);
+	}
+	va_end(list);
 }
 
 void LCD_print_Char(uint8_t ch)
@@ -178,6 +189,10 @@ void LCD_Init()
 
 	/* entry mode set */
 	LCD_WriteCMD(0x06);
+	delay_us(40);
+
+	/* display shift to the right */
+	LCD_WriteCMD(0x1C);
 	delay_us(40);
 
 	/* return home */

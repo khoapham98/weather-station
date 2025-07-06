@@ -1,10 +1,9 @@
 /*
- * timer.h
- *
- *  Created on: Jul 1, 2025
- *      Author: ACER
+ * 	File		: timer.h
+ *	Created on	: Jul 1, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
-
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_
 

@@ -1,10 +1,9 @@
 /*
- * lcd1602.h
- *
- *  Created on: Jul 2, 2025
- *      Author: ACER
+ * 	File		: lcd1602.h
+ *	Created on	: Jul 2, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
-
 #ifndef INC_LCD1602_H_
 #define INC_LCD1602_H_
 

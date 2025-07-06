@@ -1,8 +1,8 @@
 /*
- * lcd1602.c
- *
- *  Created on: Jul 2, 2025
- *      Author: ACER
+ * 	File		: lcd1602.c
+ *	Created on	: Jul 2, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
 #include "main.h"
 #include "lcd1602.h"
@@ -190,7 +190,7 @@ void LCD_Init()
 }
 
 /*	==  I2C1  ==
-	VCC: 3V
+	VCC: 5V
 	GND: GND
 	PB8: SCL
 	PB9: SDA

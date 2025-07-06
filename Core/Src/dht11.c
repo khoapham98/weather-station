@@ -1,8 +1,8 @@
 /*
- * dht11.c
- *
- *  Created on: Jul 1, 2025
- *      Author: ACER
+ * 	File		: dht11.c
+ *	Created on	: Jul 1, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
 #include "main.h"
 #include "dht11.h"

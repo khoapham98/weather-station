@@ -1,10 +1,9 @@
 /*
- * dht11.h
- *
- *  Created on: Jul 1, 2025
- *      Author: ACER
+ * 	File		: dht11.h
+ *	Created on	: Jul 1, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
-
 #ifndef INC_DHT11_H_
 #define INC_DHT11_H_
 #define GPIOC_BASE_ADDR 0x40020800

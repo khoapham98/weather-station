@@ -1,8 +1,8 @@
 /*
- * timer.c
- *
- *  Created on: Jul 1, 2025
- *      Author: ACER
+ * 	File		: timer.c
+ *	Created on	: Jul 1, 2025
+ *	Author		: Khoa
+ * 	GitHub		: https://github.com/khoapham98
  */
 #include "main.h"
 #include "timer.h"

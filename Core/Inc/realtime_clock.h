@@ -11,6 +11,9 @@
 #define RTC_BASE_ADDR 0x40002800
 #define PWR_BASE_ADDR 0x40007000
 #define RCC_BASE_ADDR 0x40023800
+
+void update_date(uint8_t* date);
+void update_time(uint8_t* time);
 uint32_t get_date();
 uint32_t get_time();
 void RTC_Init();

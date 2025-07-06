@@ -32,10 +32,10 @@ typedef enum
 	CMD  = 0x00
 } type_t;
 
+void scroll_left();
 void LCD_gotoxy(uint8_t row, uint8_t column);
 void set_cursor_position(uint8_t cmd);
 void LCD_print_String(char* str, ...);
-void LCD_print_String_and_Scroll(char* str, ...);
 void LCD_print_Char(uint8_t ch);
 void LCD_ClrScr();
 void LCD_WriteDATA(uint8_t data);

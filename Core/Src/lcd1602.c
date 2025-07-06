@@ -42,22 +42,11 @@ void set_cursor_position(uint8_t cmd)
 	delay_us(40);
 }
 
-void LCD_print_String_and_Scroll(char* str, ...)
+void scroll_left()
 {
-	va_list list;
-	va_start(list, str);
-	char print_buf[128] = { 0 };
-	vsprintf(print_buf, str, list);
-	int size = strlen(print_buf);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < 16; i++)
 	{
-		LCD_print_Char(print_buf[i]);
-	}
-	va_end(list);
-	int scroll_time = size - 16 + 3;
-	for (int i = 0; i < scroll_time; i++)
-	{
-		delay_ms(500);
+		delay_ms(300);
 		LCD_WriteCMD(0x18);
 	}
 }

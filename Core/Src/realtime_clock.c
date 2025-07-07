@@ -8,20 +8,84 @@
 #include "realtime_clock.h"
 #include <string.h>
 
-uint32_t get_date()
+char* months[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+char* suffix[4]  = { "st", "nd", "rd", "th" };
+
+date_t get_date()
 {
 	uint32_t* RTC_DR  = (uint32_t*) (RTC_BASE_ADDR + 0x04);
 	uint32_t* RTC_ISR  = (uint32_t*) (RTC_BASE_ADDR + 0x0C);
 	while (((*RTC_ISR >> 5) & 1) == 0);
-	return *RTC_DR;
+	date_t _date;
+	_date.day   = (((*RTC_DR >> 4) & 0b11) * 10) + ((*RTC_DR >> 0) & 0xf);
+	_date.month = (((*RTC_DR >> 12) & 0b1) * 10) + ((*RTC_DR >> 8) & 0xf);
+	_date.year  = (((*RTC_DR >> 20) & 0xf) * 10) + ((*RTC_DR >> 16) & 0xf) + 2000;
+	if (_date.day == 1)
+	{
+		_date.suffix = "st";
+	}
+	else if (_date.day == 2)
+	{
+		_date.suffix = "nd";
+	}
+	else if (_date.day == 3)
+	{
+		_date.suffix = "rd";
+	}
+	else
+	{
+		_date.suffix = "th";
+	}
+	return _date;
 }
 
-uint32_t get_time()
+time_t get_time()
 {
 	uint32_t* RTC_TR  = (uint32_t*) (RTC_BASE_ADDR + 0x00);
 	uint32_t* RTC_ISR  = (uint32_t*) (RTC_BASE_ADDR + 0x0C);
 	while (((*RTC_ISR >> 5) & 1) == 0);
-	return *RTC_TR;
+	time_t _time;
+	_time.second = (((*RTC_TR >> 4)  & 0b111) * 10) + ((*RTC_TR >> 0 ) & 0xf);
+	_time.minute = (((*RTC_TR >> 12) & 0b111) * 10) + ((*RTC_TR >> 8 ) & 0xf);
+	_time.hour   = (((*RTC_TR >> 20) & 0b11 ) * 10) + ((*RTC_TR >> 16) & 0xf);
+	return _time;
+}
+
+void update_date(uint8_t* date)
+{
+	char* DATE = __DATE__;
+	int date_size = strlen(DATE);
+	for (int i = 0; i < 12; i++)
+	{
+		if (strstr(DATE, months[i]) != NULL)
+		{
+			date[0] = ++i;
+			break;
+		}
+	}
+
+	int index = 1;
+	for (int i = 3; i < date_size; i++)
+	{
+		if (DATE[i] >= '0' && DATE[i] <= '9')
+		{
+			date[index++] = DATE[i] - 48;
+		}
+	}
+}
+
+void update_time(uint8_t* time)
+{
+	char* TIME = __TIME__;
+	int time_size = strlen(TIME);
+	int index = 0;
+	for (int i = 0; i < time_size; i++)
+	{
+		if (TIME[i] >= '0' && TIME[i] <= '9')
+		{
+			time[index++] = TIME[i] - 48;
+		}
+	}
 }
 
 void RTC_Init()
@@ -71,51 +135,18 @@ void RTC_Init()
 
 	uint8_t date[7] = { 0 };
 	update_date(date);
-//	*RTC_DR &= ~0xffff;
-	*RTC_DR = (date[5] << 20) | (date[6] << 16) | ((date[0] / 10) << 12) | ((date[0] % 10) << 8) | (date[1] << 4) | date[2];
-
+	*RTC_DR &= ~0xffff;
+	if (date[6] == 0)
+	{
+		*RTC_DR = (date[4] << 20) | (date[5] << 16) | ((date[0] / 10) << 12) | ((date[0] % 10) << 8) | date[1];
+	}
+	else
+	{
+		*RTC_DR = (date[5] << 20) | (date[6] << 16) | ((date[0] / 10) << 12) | ((date[0] % 10) << 8) | (date[1] << 4) | date[2];
+	}
 	/* exit the Init mode to finish the sequence */
 	*RTC_ISR &= ~(1 << 7);
 
 	/* re-active the write protection */
 	*RTC_WPR = 0xFF;
-}
-
-char* months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-void update_date(uint8_t* date)
-{
-	char* DATE = __DATE__;
-	int date_size = strlen(DATE);
-	for (int i = 0; i < 12; i++)
-	{
-		if (strstr(DATE, months[i]) != NULL)
-		{
-			date[0] = ++i;
-			break;
-		}
-	}
-
-	int index = 1;
-	for (int i = 3; i < date_size; i++)
-	{
-		if (DATE[i] >= '0' && DATE[i] <= '9')
-		{
-			date[index++] = DATE[i] - 48;
-		}
-	}
-}
-
-void update_time(uint8_t* time)
-{
-	char* TIME = __TIME__;
-	int time_size = strlen(TIME);
-	int index = 0;
-	for (int i = 0; i < time_size; i++)
-	{
-		if (TIME[i] >= '0' && TIME[i] <= '9')
-		{
-			time[index++] = TIME[i] - 48;
-		}
-	}
 }

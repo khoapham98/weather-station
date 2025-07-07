@@ -1,5 +1,5 @@
-../Core/Src/realtime_clock.c:11:10:get_date	2
-../Core/Src/realtime_clock.c:19:10:get_time	2
-../Core/Src/realtime_clock.c:27:6:RTC_Init	3
-../Core/Src/realtime_clock.c:86:6:update_date	6
-../Core/Src/realtime_clock.c:109:6:update_time	4
+../Core/Src/realtime_clock.c:14:8:get_date	5
+../Core/Src/realtime_clock.c:42:8:get_time	2
+../Core/Src/realtime_clock.c:54:6:update_date	6
+../Core/Src/realtime_clock.c:77:6:update_time	4
+../Core/Src/realtime_clock.c:91:6:RTC_Init	4

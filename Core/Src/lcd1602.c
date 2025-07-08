@@ -172,10 +172,6 @@ void LCD_Init()
 	LCD_WriteCMD(0x0C);
 	delay_us(40);
 
-	/* clear display */
-	LCD_WriteCMD(0x01);
-	delay_ms(2);
-
 	/* entry mode set */
 	LCD_WriteCMD(0x06);
 	delay_us(40);
@@ -184,9 +180,8 @@ void LCD_Init()
 	LCD_WriteCMD(0x1C);
 	delay_us(40);
 
-	/* return home */
-	LCD_WriteCMD(0x02);
-	delay_ms(2);
+	/* clear screen */
+	LCD_ClrScr();
 }
 
 /*	==  I2C1  ==

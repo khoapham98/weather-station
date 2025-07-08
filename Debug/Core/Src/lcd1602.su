@@ -9,4 +9,4 @@
 ../Core/Src/lcd1602.c:101:6:write_4bits	16	static
 ../Core/Src/lcd1602.c:114:6:master_transmit	40	static
 ../Core/Src/lcd1602.c:152:6:LCD_Init	8	static
-../Core/Src/lcd1602.c:198:6:I2C1_Init	48	static
+../Core/Src/lcd1602.c:193:6:I2C1_Init	48	static

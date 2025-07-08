@@ -1,0 +1,2 @@
+../Core/Src/uart.c:10:6:UART_SendDATA	24	static
+../Core/Src/uart.c:27:6:UART_Init	32	static

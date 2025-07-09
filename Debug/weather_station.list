@@ -293,7 +293,7 @@ void I2C1_Init()
 08000340 <main>:
 time_t time;
 date_t date;
-uint8_t test[5] = { 30, 5, 34, 15, 0 };
+uint8_t test[5] = { 28, 16, 29, 68, 0 };
 
 int main()
 {
@@ -305,7 +305,6 @@ int main()
  8000348:	f7ff ff4e 	bl	80001e8 <DHT11_Init>
 	I2C1_Init();
  800034c:	f7ff ff82 	bl	8000254 <I2C1_Init>
-//	LCD_Init();
 	RTC_Init();
  8000350:	f000 f89c 	bl	800048c <RTC_Init>
 	UART_Init();

@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "uart.h"
+#include "uart_esp.h"
 
 bool read_sensor(float* data)
 {
@@ -18,10 +18,8 @@ bool read_sensor(float* data)
     }
     if (buf[4] != STOP_BYTE) { return false; }
 
-    float humi = buf[0] + (buf[1] / 100.0f);
-    float temp = buf[2] + (buf[3] / 100.0f);
-    data[0] = humi;
-    data[1] = temp;
+    data[0] = buf[0] + (buf[1] / 100.0f);
+    data[1] = buf[2] + (buf[3] / 100.0f);
     return true; 
 }
 

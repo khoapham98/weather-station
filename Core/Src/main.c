@@ -8,13 +8,14 @@
 uint8_t data[5] = { 0 };
 time_t time;
 date_t date;
+uint8_t test[5] = { 30, 5, 34, 15, 0 };
 
 int main()
 {
 	TIM2_Init();
 	DHT11_Init();
 	I2C1_Init();
-	LCD_Init();
+//	LCD_Init();
 	RTC_Init();
 	UART_Init();
 
@@ -31,6 +32,8 @@ int main()
 //			LCD_print_String("HUMI : %d.%d %cRH  -  TEMP : %d.%d %cC", data[0], data[1], 0x25, data[2], data[3], 0xDF);
 //		}
 //		scroll_left();
+		delay_ms(1500);
+		UART_SendDATA(test);
 	}
 	return 0;
 }

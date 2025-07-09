@@ -7,16 +7,14 @@
 #include "main.h"
 #include "uart.h"
 
-void UART_Send4Bytes(uint8_t* _data)
+void UART_SendDATA(uint8_t* _data)
 {
-	uint32_t* UART_SR = (uint32_t*) (UART1_BASE_ADDR + 0x00);
-	uint32_t* UART_DR = (uint32_t*) (UART1_BASE_ADDR + 0x04);
-
-	for (int i = 0; i < 3; i++)
+	UART_SendByte(START_BYTE);
+	for (int i = 0; i < 4; i++)
 	{
-		*UART_DR = _data[i];
-		while (((*UART_SR >> 7) & 1) == 0);
+		UART_SendByte(_data[i]);
 	}
+	UART_SendByte(STOP_BYTE);
 }
 
 void UART_SendByte(uint8_t data)

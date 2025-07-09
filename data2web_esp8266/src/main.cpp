@@ -3,7 +3,7 @@
 #include "wifi_esp.h"
 
 float data[2] = {0};
-
+float test[2] = { 26.4, 35.8 };
 void setup()
 {
     ESP_UART_Init();
@@ -20,5 +20,5 @@ void loop()
     //     Serial.println(data[1], 2);
     // }
     delay(2000);
-    Serial.println("Hello World");
+    WiFi_sendData(test);
 }   

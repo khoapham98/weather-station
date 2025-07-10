@@ -42,25 +42,21 @@ void receive_data(uint8_t* data)
 
 	/* MCU pulls up voltage and wait for DHT response (~20us) */
 	*GPIOC_ODR |= 1 << 14;
-	delay_us(20);
 
 	/* Set PC14 as INPUT to receive the response from DHT11 */
 	*GPIOC_MODER &= ~(0b11 << (14 * 2));
 
 	/* wait for DHT11 to response */
-	while (((*GPIOC_IDR >> 14) & 1) == 1);
-	delay_us(60);
+  	while (((*GPIOC_IDR >> 14) & 1) == 1);
 	while (((*GPIOC_IDR >> 14) & 1) == 0);
-	delay_us(60);
 
 	for (int i = 0; i < 5; i++)
 	{
 		for (int j = 7; j >= 0; j--)
 		{
 			while (((*GPIOC_IDR >> 14) & 1) == 1);
-			delay_us(30);
 			while (((*GPIOC_IDR >> 14) & 1) == 0);
-			delay_us(30);
+			delay_us(40);
 
 			if (((*GPIOC_IDR >> 14) & 1) == 1)
 			{

@@ -51,15 +51,15 @@ time_t get_time()
 	return _time;
 }
 
-void update_date(uint8_t* date)
+void update_date(uint8_t* _date)
 {
-	char* DATE = __DATE__;
+	volatile char* DATE = __DATE__;
 	int date_size = strlen(DATE);
 	for (int i = 0; i < 12; i++)
 	{
 		if (strstr(DATE, months[i]) != NULL)
 		{
-			date[0] = ++i;
+			_date[0] = ++i;
 			break;
 		}
 	}
@@ -69,21 +69,21 @@ void update_date(uint8_t* date)
 	{
 		if (DATE[i] >= '0' && DATE[i] <= '9')
 		{
-			date[index++] = DATE[i] - 48;
+			_date[index++] = DATE[i] - 48;
 		}
 	}
 }
 
-void update_time(uint8_t* time)
+void update_time(uint8_t* _time)
 {
-	char* TIME = __TIME__;
+	volatile char* TIME = __TIME__;
 	int time_size = strlen(TIME);
 	int index = 0;
 	for (int i = 0; i < time_size; i++)
 	{
 		if (TIME[i] >= '0' && TIME[i] <= '9')
 		{
-			time[index++] = TIME[i] - 48;
+			_time[index++] = TIME[i] - 48;
 		}
 	}
 }
@@ -129,11 +129,11 @@ void RTC_Init()
 	*RTC_PRER = (124 << 16) | 255;
 
 	/* configure time and date for RTC */
-	uint8_t time[6] = { 0 };
+	uint8_t time[7] = { 0 };
 	update_time(time);
 	*RTC_TR = (time[0] << 20) | (time[1] << 16) | (time[2] << 12) | (time[3] << 8) | (time[4] << 4) | time[5];
 
-	uint8_t date[7] = { 0 };
+	uint8_t date[8] = { 0 };
 	update_date(date);
 	*RTC_DR &= ~0xffff;
 	if (date[6] == 0)

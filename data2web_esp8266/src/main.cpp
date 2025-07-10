@@ -19,5 +19,5 @@ void loop()
         Serial.println(data[1], 2);
     }
     WiFi_sendData(data);
-    delay(2000);
+    delay(1500);
 }   

@@ -1,14 +1,14 @@
 # Weather Station
 
 ## Overview
-This project implements a simple weather station using an STM32F411 microcontroller and an ESP8266 microcontroller. The system reads temperature and humidity data from a DHT11 sensor, displays it on an I2C LCD1602, and then sends the same data via UART to an ESP8266. The ESP8266 connects to a Wi-Fi network and hosts a local web page (using Flask) to display real-time sensor readings.
+This project implements a simple weather station using an STM32F411 microcontroller and an ESP8266 microcontroller. The system reads temperature and humidity data from a DHT11 sensor, displays it on an I2C LCD1602, displays the current date and time, and then sends the data to an ESP8266. The ESP8266 connects to a Wi-Fi network and hosts a local web page to display real-time sensor readings.
 
 ## Demo Video
-[Watch demo video on YouTube](https://youtube.com/shorts/CIl2exy2Sw8)
+[Watch demo video on YouTube](https://youtube.com/shorts/CbO7r50HCVQ)
 
 ## Features
 - Read temperature and humidity from DHT11
-- Display values on LCD1602 via I2C
+- Display temperature, humidity, and real-time data on LCD1602 via I2C (updates every 10–15s)
 - Transmit sensor data over UART to ESP8266
 - ESP8266 hosts a local web server using Flask
 - View live data on a web browser within the same Wi-Fi network

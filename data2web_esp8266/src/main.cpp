@@ -3,7 +3,6 @@
 #include "wifi_esp.h"
 
 float data[2] = {0};
-float test[2] = { 26.4, 35.8 };
 void setup()
 {
     ESP_UART_Init();
@@ -12,13 +11,13 @@ void setup()
 
 void loop()
 {
-    // if (read_sensor(data) == true)
-    // {
-    //     Serial.print("Humidity: ");
-    //     Serial.println(data[0], 2);
-    //     Serial.print("Temperature: ");
-    //     Serial.println(data[1], 2);
-    // }
+    if (read_sensor(data) == true)
+    {
+        Serial.print("Humidity: ");
+        Serial.println(data[0], 2);
+        Serial.print("Temperature: ");
+        Serial.println(data[1], 2);
+    }
+    WiFi_sendData(data);
     delay(2000);
-    WiFi_sendData(test);
 }   

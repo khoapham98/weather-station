@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const char* server_url = "http://192.168.1.9:5000/data";
+const char* server_url = SERVER_URL;
 
 void WiFi_sendData(float* _data)
 {

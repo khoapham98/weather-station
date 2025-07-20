@@ -6,7 +6,7 @@ float data[2] = {0};
 void setup()
 {
     ESP_UART_Init();
-    WiFi_connect(REDACTED_SSID, REDACTED_PASS);
+    WiFi_connect(WIFI_SSID, WIFI_PASSWORD);
 }
 
 void loop()
